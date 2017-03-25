@@ -1,5 +1,7 @@
 import Piece
 import pygame
+import Settings
+
 
 class Grid:
 
@@ -22,14 +24,14 @@ class Grid:
     def getOnMousePiece(self):
         list = [None]
         for piece in self.pieces:
-            rect = pygame.Rect(piece.getPosX(), piece.getPosY(), 32*piece.getpatternY(), 32*piece.getpatternX())
+            rect = pygame.Rect(piece.getPosX(), piece.getPosY(), Settings.GRID_RES*piece.getpatternY(), Settings.GRID_RES*piece.getpatternX())
             if rect.collidepoint(pygame.mouse.get_pos()):
                 list.append(piece)
         return list[len(list)-1]
 
     def getOnMousePieceExcept(self, p: Piece):
         for piece in self.pieces:
-            rect = pygame.Rect(piece.getPosX(), piece.getPosY(), 32*piece.getpatternY(), 32*piece.getpatternX())
+            rect = pygame.Rect(piece.getPosX(), piece.getPosY(), Settings.GRID_RES*piece.getpatternY(), Settings.GRID_RES*piece.getpatternX())
             if rect.collidepoint(pygame.mouse.get_pos()) and p is not piece:
                 return piece
         return None
@@ -39,20 +41,20 @@ class Grid:
             return
         import math
         (mouseX, mouseY) = pygame.mouse.get_pos()
-        x = math.floor((mouseX-self.posX-piece.getpatternY()*32/2)/32)
-        y = math.floor((mouseY-self.posY-piece.getpatternX()*32/2)/32)
-        if x < -piece.getpatternY()+1 or x >= self.width/32 or y < -piece.getpatternX()+1 or y >= self.height/32:
+        x = math.floor((mouseX-self.posX-piece.getpatternY()*Settings.GRID_RES/2)/Settings.GRID_RES)
+        y = math.floor((mouseY-self.posY-piece.getpatternX()*Settings.GRID_RES/2)/Settings.GRID_RES)
+        if x < -piece.getpatternY()+1 or x >= self.width/Settings.GRID_RES or y < -piece.getpatternX()+1 or y >= self.height/Settings.GRID_RES:
             return
-        piece.setPosX(self.posX+x*32)
-        piece.setPosY(self.posY+y*32)
+        piece.setPosX(self.posX+x*Settings.GRID_RES)
+        piece.setPosY(self.posY+y*Settings.GRID_RES)
         return
 
     def renderFrame(self, window, backgroundColor):
         window.fill(backgroundColor)
-        for x in range(0,int(self.width/32)):
-            for y in range(0,int(self.height/32)):
-                pygame.draw.line(window, (255, 255, 255), (self.posX + x * 32, self.posY + y * 32), (self.posX + (x + 1) * 32, self.posY + y * 32))
-                pygame.draw.line(window, (255, 255, 255), (self.posX + x * 32, self.posY + y * 32), (self.posX + x * 32, self.posY + (y + 1) * 32))
+        for x in range(0,int(self.width/Settings.GRID_RES)):
+            for y in range(0,int(self.height/Settings.GRID_RES)):
+                pygame.draw.line(window, (255, 255, 255), (self.posX + x * Settings.GRID_RES, self.posY + y * Settings.GRID_RES), (self.posX + (x + 1) * Settings.GRID_RES, self.posY + y * Settings.GRID_RES))
+                pygame.draw.line(window, (255, 255, 255), (self.posX + x * Settings.GRID_RES, self.posY + y * Settings.GRID_RES), (self.posX + x * Settings.GRID_RES, self.posY + (y + 1) * Settings.GRID_RES))
         pygame.draw.rect(window, (255, 255, 255), pygame.Rect(self.posX, self.posY, self.width+1, self.height+1), 1)
         for piece in self.pieces:
             piece.render(window)
@@ -72,5 +74,5 @@ class Grid:
                     if not self.clicked or self.selected is None:
                         continue
                     (mouseX, mouseY) = pygame.mouse.get_pos()
-                    self.selected.setPosX(mouseX-self.selected.getpatternY()*32/2)
-                    self.selected.setPosY(mouseY-self.selected.getpatternX()*32/2)
+                    self.selected.setPosX(mouseX-self.selected.getpatternY()*Settings.GRID_RES/2)
+                    self.selected.setPosY(mouseY-self.selected.getpatternX()*Settings.GRID_RES/2)

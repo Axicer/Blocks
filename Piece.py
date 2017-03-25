@@ -1,15 +1,19 @@
+import Settings
+
+
 class TileColor:
 
     def __init__(self, path):
         import pygame
         self.path = path
-        self.img = pygame.transform.scale(pygame.image.load("res/img/"+path), (32,32))
+        self.img = pygame.transform.scale(pygame.image.load("res/img/"+path), (Settings.GRID_RES,Settings.GRID_RES))
 
     def getImage(self):
         return self.img
 
     def getPath(self):
         return self.path
+
 
 class Tile:
 
@@ -35,6 +39,7 @@ class Tile:
 
     def setPiece(self, piece):
         self.piece = piece
+
 
 class Piece:
 
@@ -81,4 +86,4 @@ class Piece:
                 t = self.pattern[x][y]
                 if t is not None:
                     t.setPiece(self)
-                    window.blit(t.getColor().getImage(), (self.x+y*32, self.y+x*32))
+                    window.blit(t.getColor().getImage(), (self.x+y*Settings.GRID_RES, self.y+x*Settings.GRID_RES))
