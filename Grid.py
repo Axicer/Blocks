@@ -1,11 +1,13 @@
 import Piece
 import pygame
 import Settings
+import Data
+import Timer
 
 
 class Grid:
 
-    def __init__(self, posX: int, posY: int, width: int, height: int):
+    def __init__(self, posX: int, posY: int, width: int, height: int, window):
         self.posX = posX
         self.posY = posY
         self.width = width
@@ -13,6 +15,8 @@ class Grid:
         self.pieces = []
         self.clicked = False
         self.selected = None
+        self.timer = Timer.Timer(5, 0, 0, 0, window)
+        self.timer.start()
 
     def addPiece(self, piece: Piece):
         self.pieces.append(piece)
@@ -30,11 +34,12 @@ class Grid:
         return list[len(list)-1]
 
     def getOnMousePieceExcept(self, p: Piece):
+        list = [None]
         for piece in self.pieces:
             rect = pygame.Rect(piece.getPosX(), piece.getPosY(), Settings.GRID_RES*piece.getpatternY(), Settings.GRID_RES*piece.getpatternX())
             if rect.collidepoint(pygame.mouse.get_pos()) and p is not piece:
-                return piece
-        return None
+                return list.append(piece)
+        return list[len(list)-1]
 
     def placePiece(self, piece: Piece):
         if piece is None or self.getOnMousePieceExcept(piece) is not None:
@@ -51,18 +56,22 @@ class Grid:
 
     def renderFrame(self, window, backgroundColor):
         window.fill(backgroundColor)
-        for x in range(0,int(self.width/Settings.GRID_RES)):
-            for y in range(0,int(self.height/Settings.GRID_RES)):
+        window.blit(Data.BACKGROUND_IMAGE, (0,0))
+        for piece in self.pieces:
+            piece.render(window)
+        for x in range(0, int(self.width/Settings.GRID_RES)):
+            for y in range(0, int(self.height/Settings.GRID_RES)):
                 pygame.draw.line(window, (255, 255, 255), (self.posX + x * Settings.GRID_RES, self.posY + y * Settings.GRID_RES), (self.posX + (x + 1) * Settings.GRID_RES, self.posY + y * Settings.GRID_RES))
                 pygame.draw.line(window, (255, 255, 255), (self.posX + x * Settings.GRID_RES, self.posY + y * Settings.GRID_RES), (self.posX + x * Settings.GRID_RES, self.posY + (y + 1) * Settings.GRID_RES))
         pygame.draw.rect(window, (255, 255, 255), pygame.Rect(self.posX, self.posY, self.width+1, self.height+1), 1)
-        for piece in self.pieces:
-            piece.render(window)
+        textsurface = self.timer.font.render(str(self.timer.getMinutes()) + ":" + str(self.timer.getSeconds()), False, (255, 255, 255))
+        window.blit(textsurface, (Settings.WIDTH/2-25, 0))
         pygame.display.flip()
 
     def updateFrame(self):
         for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    self.timer.stop()
                     quit()
                 if event.type == pygame.MOUSEBUTTONUP:
                     self.clicked = False

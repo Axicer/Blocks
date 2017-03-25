@@ -10,8 +10,8 @@ class Main:
     def __init__(self, title):
         self.title = title
         self.clock = pygame.time.Clock()
-        self.grid = Grid.Grid(Settings.WIDTH / 2 - Settings.GRID_RES * Settings.GRID_X / 2, Settings.HEIGHT / 2 - Settings.GRID_RES * Settings.GRID_Y / 2, Settings.GRID_RES * Settings.GRID_X, Settings.GRID_RES * Settings.GRID_Y)
         self.screen = pygame.display.set_mode((Settings.WIDTH, Settings.HEIGHT))
+        self.grid = Grid.Grid(Settings.WIDTH / 2 - Settings.GRID_RES * Settings.GRID_X / 2, Settings.HEIGHT / 2 - Settings.GRID_RES * Settings.GRID_Y / 2, Settings.GRID_RES * Settings.GRID_X, Settings.GRID_RES * Settings.GRID_Y, self.screen)
         pygame.display.set_caption(self.title)
 
     def main(self):
@@ -27,4 +27,5 @@ class Main:
         self.main()
 
 if __name__ == '__main__':
+    pygame.font.init()
     Main("Blocks").init()
