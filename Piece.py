@@ -1,4 +1,5 @@
 import Settings
+import pygame
 
 
 class TileColor:
@@ -21,6 +22,8 @@ class Tile:
         self.glow = glow
         self.color = color
         self.piece = None
+        self.x = 0
+        self.y = 0
 
     def setGlowing(self, glow: bool):
         self.glow = glow
@@ -40,8 +43,35 @@ class Tile:
     def setPiece(self, piece):
         self.piece = piece
 
+    def setXOffset(self, x: int):
+        self.x = x
+
+    def getXOffset(self):
+        return self.x
+
+    def setYOffset(self, y: int):
+        self.y = y
+
+    def getYOffset(self):
+        return self.y
+
+    def getRect(self):
+        return pygame.Rect(
+                self.piece.getPosX() + self.getXOffset() * Settings.GRID_RES,
+                self.piece.getPosY() + self.getXOffset() * Settings.GRID_RES,
+                self.piece.getPosX() + self.getXOffset() * Settings.GRID_RES + Settings.GRID_RES,
+                self.piece.getPosY() + self.getYOffset() * Settings.GRID_RES + Settings.GRID_RES)
 
 class Piece:
+
+    def populateTiles(self):
+        for x in range(0, self.patternX):
+            for y in range(0, self.patternY):
+                t = self.pattern[x][y]
+                if t is not None:
+                    t.setPiece(self)
+                    t.setXOffset(x)
+                    t.setYOffset(y)
 
     def __init__(self, pattern, patternX: int, patternY: int, x: int, y: int):
         self.pattern = pattern
@@ -49,6 +79,7 @@ class Piece:
         self.patternY = patternY
         self.x = x
         self.y = y
+        self.populateTiles()
 
     def getpattern(self):
         return self.pattern
@@ -85,5 +116,13 @@ class Piece:
             for y in range(0, self.patternY):
                 t = self.pattern[x][y]
                 if t is not None:
-                    t.setPiece(self)
                     window.blit(t.getColor().getImage(), (self.x+y*Settings.GRID_RES, self.y+x*Settings.GRID_RES))
+
+    def getTiles(self):
+        l = []
+        for x in range(0, self.patternX):
+            for y in range(0, self.patternY):
+                t = self.pattern[x][y]
+                if t is not None:
+                    l.append(t)
+        return l

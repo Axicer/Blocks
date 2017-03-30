@@ -27,7 +27,7 @@ class Timer(Thread):
             self.sec -= 1
             if self.sec < 0:
                 self.min -= 1
-                self.sec = 60
+                self.sec = 59
             if self.min == 0 and self.sec == 0:
                 self.stop()
 
