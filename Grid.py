@@ -3,6 +3,8 @@ import pygame
 import Settings
 import Data
 import Timer
+import copy
+import numpy
 
 
 class Grid:
@@ -19,7 +21,7 @@ class Grid:
         self.selected = None
         self.timer = Timer.Timer(5, 0, 0, 0, window)
         self.timer.start()
-        self.grid = [[0]*self.columns]*self.rows
+        self.grid = numpy.array([[0] * self.columns ] *self.rows)
 
     def addPiece(self, piece: Piece):
         self.pieces.append(piece)
@@ -52,6 +54,13 @@ class Grid:
                 l.append(piece)
         return l[len(l)-1]
 
+    def checkGridDone():
+        for x in range(0, self.rows):
+            for y in range(0, self.columns):
+                if self.grid[x][y] == 0:
+                    return False
+        return True
+
     def placePiece(self, piece: Piece):
         if piece is None or self.getOnMousePieceExcept(piece) is not None:
             return
@@ -69,7 +78,9 @@ class Grid:
         canPlace = True
         for tile in piece.getTiles():
             toffX, toffY = tile.getXOffset(), tile.getYOffset()
-            if self.grid[x+toffX][y+toffY] == 1:
+            if x+toffY < 0 or x+toffY > self.columns-1 or y+toffX < 0 or y+toffX > self.rows-1:
+                continue
+            if self.grid[y+toffX][x+toffY] == 1:
                 canPlace = False
                 break
         if canPlace:
@@ -77,9 +88,11 @@ class Grid:
             piece.setPosY(self.posY+y*Settings.GRID_RES)
             for tile in piece.getTiles():
                 toffX, toffY = tile.getXOffset(), tile.getYOffset()
-                #self.grid[x+toffX][y+toffY] = 1
-                #TODO
-        print("piece placed", self.grid)
+                if x+toffY < 0 or x+toffY > self.columns-1 or y+toffX < 0 or y+toffX > self.rows-1:
+                    continue
+                self.grid[y+toffX][x+toffY] = 1
+
+        print("grid after piece placed", self.grid)
 
     def deletePiece(self, piece: Piece):
         if piece is None:
@@ -97,9 +110,10 @@ class Grid:
 
         for tile in piece.getTiles():
             toffX, toffY = tile.getXOffset(), tile.getYOffset()
-            print(x, y)
-            #self.grid[x+toffX][y+toffY] = 0
-            #TODO
+            if x+toffY < 0 or x+toffY > self.columns-1 or y+toffX < 0 or y+toffX > self.rows-1:
+                continue
+            print(x+toffY, y+toffX)
+            self.grid[y+toffX][x+toffY] = 0
 
     def renderFrame(self, window, backgroundColor):
         window.fill(backgroundColor)
