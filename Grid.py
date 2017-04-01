@@ -21,7 +21,7 @@ class Grid:
         self.selected = None
         self.timer = Timer.Timer(5, 0, 0, 0, window)
         self.timer.start()
-        self.grid = numpy.array([[0] * self.columns ] *self.rows)
+        self.grid = numpy.array([[0] * self.columns] * self.rows)
 
     def addPiece(self, piece: Piece):
         self.pieces.append(piece)
@@ -54,7 +54,7 @@ class Grid:
                 l.append(piece)
         return l[len(l)-1]
 
-    def checkGridDone():
+    def checkGridDone(self):
         for x in range(0, self.rows):
             for y in range(0, self.columns):
                 if self.grid[x][y] == 0:
@@ -92,8 +92,6 @@ class Grid:
                     continue
                 self.grid[y+toffX][x+toffY] = 1
 
-        print("grid after piece placed", self.grid)
-
     def deletePiece(self, piece: Piece):
         if piece is None:
             return
@@ -112,7 +110,6 @@ class Grid:
             toffX, toffY = tile.getXOffset(), tile.getYOffset()
             if x+toffY < 0 or x+toffY > self.columns-1 or y+toffX < 0 or y+toffX > self.rows-1:
                 continue
-            print(x+toffY, y+toffX)
             self.grid[y+toffX][x+toffY] = 0
 
     def renderFrame(self, window, backgroundColor):

@@ -1,9 +1,7 @@
 import Settings
 import pygame
-import Piece
 import Data
 import Grid
-import copy
 
 class Main:
 
@@ -21,45 +19,9 @@ class Main:
             self.clock.tick(60)
 
     def init(self):
-        self.grid.addPiece(
-            Piece.Piece(
-                [
-                    [
-                        copy.copy(Data.TILE_BLUE),
-                        copy.copy(Data.TILE_BLUE),
-                        None
-                    ], [
-                        None,
-                        copy.copy(Data.TILE_BLUE),
-                        copy.copy(Data.TILE_BLUE)
-                    ]
-                ],
-                2, 3, 0, 0))
-        self.grid.addPiece(
-            Piece.Piece(
-                [
-                    [
-                        None,
-                        copy.copy(Data.TILE_RED),
-                        copy.copy(Data.TILE_RED)
-                    ], [
-                        copy.copy(Data.TILE_RED),
-                        copy.copy(Data.TILE_RED),
-                        None
-                    ]
-                ],
-                2, 3, 2*Settings.GRID_RES, 1*Settings.GRID_RES))
-        self.grid.addPiece(
-            Piece.Piece(
-                [
-                    [
-                        copy.copy(Data.TILE_GREEN),
-                        copy.copy(Data.TILE_GREEN),
-                        copy.copy(Data.TILE_GREEN),
-                        copy.copy(Data.TILE_GREEN)
-                    ]
-                ],
-                1, 4, 2 * Settings.GRID_RES, 0 * Settings.GRID_RES))
+        self.grid.addPiece(Data.PIECE_R_RIGHT)
+        self.grid.addPiece(Data.PIECE_R_LEFT)
+        self.grid.addPiece(Data.PIECE_LONG)
         self.main()
 
 if __name__ == '__main__':
