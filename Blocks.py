@@ -22,6 +22,8 @@ class Main:
         self.grid.addPiece(Data.PIECE_R_RIGHT)
         self.grid.addPiece(Data.PIECE_R_LEFT)
         self.grid.addPiece(Data.PIECE_LONG)
+        self.grid.addPiece(Data.PIECE_U)
+        self.grid.addPiece(Data.PIECE_STRANGE_1)
         self.main()
 
 if __name__ == '__main__':

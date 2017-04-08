@@ -7,7 +7,7 @@ class TileColor:
     def __init__(self, path):
         import pygame
         self.path = path
-        self.img = pygame.transform.scale(pygame.image.load("res/img/"+path), (Settings.GRID_RES,Settings.GRID_RES))
+        self.img = pygame.transform.scale(pygame.image.load("res/img/"+path), (Settings.GRID_RES, Settings.GRID_RES))
 
     def getImage(self):
         return self.img
@@ -73,7 +73,7 @@ class Piece:
                     t.setXOffset(x)
                     t.setYOffset(y)
 
-    def __init__(self, pattern, patternX: int, patternY: int, x: int, y: int):
+    def __init__(self, pattern: object, patternX: object, patternY: object, x: object, y: object) -> object:
         self.pattern = pattern
         self.patternX = patternX
         self.patternY = patternY

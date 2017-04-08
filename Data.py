@@ -1,16 +1,18 @@
-import Piece
-import pygame
+from Piece import *
+from Settings import *
 from copy import copy as cp
-import Settings
 
-TILECOLOR_BLUE = Piece.TileColor("blue.png")
-TILECOLOR_RED = Piece.TileColor("red.png")
-TILECOLOR_GREEN = Piece.TileColor("green.png")
-TILE_BLUE = Piece.Tile(TILECOLOR_BLUE, False)
-TILE_RED = Piece.Tile(TILECOLOR_RED, False)
-TILE_GREEN = Piece.Tile(TILECOLOR_GREEN, False)
+TILECOLOR_BLUE = TileColor("blue.png")
+TILECOLOR_RED = TileColor("red.png")
+TILECOLOR_GREEN = TileColor("green.png")
+TILECOLOR_YELLOW = TileColor("yellow.png")
 
-PIECE_R_RIGHT = Piece.Piece(
+TILE_BLUE = Tile(TILECOLOR_BLUE, False)
+TILE_RED = Tile(TILECOLOR_RED, False)
+TILE_GREEN = Tile(TILECOLOR_GREEN, False)
+TILE_YELLOW = Tile(TILECOLOR_YELLOW, False)
+
+PIECE_R_RIGHT = Piece(
                 [
                     [
                         cp(TILE_BLUE),
@@ -22,8 +24,8 @@ PIECE_R_RIGHT = Piece.Piece(
                         cp(TILE_BLUE)
                     ]
                 ],
-                2, 3, 0, 0)
-PIECE_R_LEFT = Piece.Piece(
+                2, 3, 0 * GRID_RES, 0 * GRID_RES)
+PIECE_R_LEFT = Piece(
                 [
                     [
                         None,
@@ -35,8 +37,8 @@ PIECE_R_LEFT = Piece.Piece(
                         None
                     ]
                 ],
-                2, 3, 2*Settings.GRID_RES, 1*Settings.GRID_RES)
-PIECE_LONG = Piece.Piece(
+                2, 3, 2 * GRID_RES, 1 * GRID_RES)
+PIECE_LONG = Piece(
                 [
                     [
                         cp(TILE_GREEN),
@@ -45,6 +47,44 @@ PIECE_LONG = Piece.Piece(
                         cp(TILE_GREEN)
                     ]
                 ],
-                1, 4, 2 * Settings.GRID_RES, 0 * Settings.GRID_RES)
+                1, 4, 2 * GRID_RES, 0 * GRID_RES)
+PIECE_U = Piece(
+                [
+                    [
+                        cp(TILE_YELLOW),
+                        None,
+                        cp(TILE_YELLOW)
+                    ],
+                    [
+                        cp(TILE_YELLOW),
+                        cp(TILE_YELLOW),
+                        cp(TILE_YELLOW)
+                    ]
+                ],
+                2, 3, 4 * GRID_RES, 2 * GRID_RES)
+PIECE_STRANGE_1 = Piece(
+                [
+                    [
+                        cp(TILE_YELLOW),
+                        cp(TILE_YELLOW),
+                        cp(TILE_YELLOW)
+                    ],
+                    [
+                        cp(TILE_YELLOW),
+                        None,
+                        cp(TILE_YELLOW)
+                    ],
+                    [
+                        cp(TILE_YELLOW),
+                        None,
+                        None
+                    ],
+                    [
+                        cp(TILE_YELLOW),
+                        None,
+                        None
+                    ]
+                ],
+                4, 3, 8 * GRID_RES, 2 * GRID_RES)
 
 BACKGROUND_IMAGE = pygame.image.load("res/img/background.jpg")
