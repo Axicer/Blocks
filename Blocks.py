@@ -2,6 +2,7 @@ import Settings
 import pygame
 import Data
 import Grid
+from copy import copy as cp
 
 class Main:
 
@@ -19,11 +20,31 @@ class Main:
             self.clock.tick(60)
 
     def init(self):
-        self.grid.addPiece(Data.PIECE_R_RIGHT)
-        self.grid.addPiece(Data.PIECE_R_LEFT)
-        self.grid.addPiece(Data.PIECE_LONG)
-        self.grid.addPiece(Data.PIECE_U)
-        self.grid.addPiece(Data.PIECE_STRANGE_1)
+        self.grid.addPiece(cp(Data.PIECE_R_RIGHT))
+        self.grid.addPiece(cp(Data.PIECE_R_LEFT))
+        self.grid.addPiece(cp(Data.PIECE_LONG_HORI))
+        self.grid.addPiece(cp(Data.PIECE_SQUARED_4))
+        self.grid.addPiece(cp(Data.PIECE_L_RIGHT_VERT))
+        self.grid.addPiece(cp(Data.PIECE_L_LEFT_VERT))
+        self.grid.addPiece(cp(Data.PIECE_L_LEFT_VERT))
+        self.grid.addPiece(cp(Data.PIECE_L_LEFT_HORI))
+        self.grid.addPiece(cp(Data.PIECE_L_RIGHT_HORI))
+        self.grid.addPiece(cp(Data.PIECE_T))
+        self.grid.addPiece(cp(Data.PIECE_T_REV))
+        self.grid.addPiece(cp(Data.PIECE_R_RIGHT))
+        self.grid.addPiece(cp(Data.PIECE_R_RIGHT))
+        self.grid.addPiece(cp(Data.PIECE_LONG_HORI))
+        self.grid.addPiece(cp(Data.PIECE_SQUARED_4))
+        self.grid.addPiece(cp(Data.PIECE_L_LEFT_HORI))
+        self.grid.addPiece(cp(Data.PIECE_T_REV))
+        self.grid.addPiece(cp(Data.PIECE_L_LEFT_VERT_REV))
+        self.grid.addPiece(cp(Data.PIECE_LONG_VERT))
+        self.grid.addPiece(cp(Data.PIECE_SQUARED_4))
+        self.grid.addPiece(cp(Data.PIECE_T_REV))
+        self.grid.addPiece(cp(Data.PIECE_L_LEFT_HORI_REV))
+        self.grid.addPiece(cp(Data.PIECE_SQUARED_4))
+        self.grid.addPiece(cp(Data.PIECE_SQUARED_4))
+        self.grid.addPiece(cp(Data.PIECE_SQUARED_4))
         self.main()
 
 if __name__ == '__main__':

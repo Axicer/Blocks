@@ -55,24 +55,27 @@ class Grid:
         return l[len(l)-1]
 
     def checkGridDone(self):
+        print(self.grid)
         for x in range(0, self.rows):
             for y in range(0, self.columns):
                 if self.grid[x][y] == 0:
                     return False
+        print("Grid is done !")
         return True
 
     def placePiece(self, piece: Piece):
-        if piece is None or self.getOnMousePieceExcept(piece) is not None:
+        if piece is None:
             return
+        '''or self.getOnMousePieceExcept(piece) is not None'''
 
         import math
         (mouseX, mouseY) = pygame.mouse.get_pos()
-        diffX = (mouseX-self.posX-piece.getpatternY()*Settings.GRID_RES/2)/Settings.GRID_RES
-        diffY = (mouseY-self.posY-piece.getpatternX()*Settings.GRID_RES/2)/Settings.GRID_RES
-        x = math.ceil(diffX) if math.ceil(diffX)-diffX < 0.5 else math.floor(diffX)
-        y = math.ceil(diffY) if math.ceil(diffY)-diffY < 0.5 else math.floor(diffY)
+        diffX = (mouseX - self.posX - piece.getpatternY() * Settings.GRID_RES / 2) / Settings.GRID_RES
+        diffY = (mouseY - self.posY - piece.getpatternX() * Settings.GRID_RES / 2) / Settings.GRID_RES
+        x = math.ceil(diffX) if math.ceil(diffX) - diffX < 0.5 else math.floor(diffX)
+        y = math.ceil(diffY) if math.ceil(diffY) - diffY < 0.5 else math.floor(diffY)
 
-        if x < -piece.getpatternY()+1 or x >= self.width/Settings.GRID_RES or y < -piece.getpatternX()+1 or y >= self.height/Settings.GRID_RES:
+        if x < -piece.getpatternY()+1 or x >= self.columns or y < -piece.getpatternX()+1 or y >= self.rows:
             return
 
         canPlace = True
@@ -91,6 +94,7 @@ class Grid:
                 if x+toffY < 0 or x+toffY > self.columns-1 or y+toffX < 0 or y+toffX > self.rows-1:
                     continue
                 self.grid[y+toffX][x+toffY] = 1
+            self.checkGridDone()
 
     def deletePiece(self, piece: Piece):
         if piece is None:
@@ -103,18 +107,18 @@ class Grid:
         x = math.ceil(diffX) if math.ceil(diffX) - diffX < 0.5 else math.floor(diffX)
         y = math.ceil(diffY) if math.ceil(diffY) - diffY < 0.5 else math.floor(diffY)
 
-        if x < -piece.getpatternY()+1 or x >= self.width/Settings.GRID_RES or y < -piece.getpatternX()+1 or y >= self.height/Settings.GRID_RES:
+        if x < -piece.getpatternY()+1 or x >= self.columns or y < -piece.getpatternX()+1 or y >= self.rows:
             return
 
         for tile in piece.getTiles():
             toffX, toffY = tile.getXOffset(), tile.getYOffset()
-            if x+toffY < 0 or x+toffY > self.columns-1 or y+toffX < 0 or y+toffX > self.rows-1:
+            if x + toffY < 0 or x + toffY > self.columns - 1 or y + toffX < 0 or y + toffX > self.rows - 1:
                 continue
-            self.grid[y+toffX][x+toffY] = 0
+            self.grid[y + toffX][x + toffY] = 0
 
     def renderFrame(self, window, backgroundColor):
         window.fill(backgroundColor)
-        window.blit(Data.BACKGROUND_IMAGE, (0,0))
+        window.blit(Data.BACKGROUND_IMAGE, (0, 0))
         for piece in self.pieces:
             piece.render(window)
         for x in range(0, int(self.width/Settings.GRID_RES)):
@@ -134,10 +138,14 @@ class Grid:
                 if event.type == pygame.MOUSEBUTTONUP:
                     self.clicked = False
                     self.placePiece(self.selected)
+                    if self.selected is not None:
+                        self.selected.setGlowing(False)
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     self.selected = self.getOnMousePiece()
                     self.clicked = True
                     self.deletePiece(self.selected)
+                    if self.selected is not None:
+                        self.selected.setGlowing(True)
                 if event.type == pygame.MOUSEMOTION:
                     if not self.clicked or self.selected is None:
                         continue

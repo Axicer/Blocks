@@ -18,18 +18,11 @@ class TileColor:
 
 class Tile:
 
-    def __init__(self, color: TileColor, glow: bool):
-        self.glow = glow
+    def __init__(self, color: TileColor):
         self.color = color
         self.piece = None
         self.x = 0
         self.y = 0
-
-    def setGlowing(self, glow: bool):
-        self.glow = glow
-
-    def isGlowing(self):
-        return self.glow
 
     def setColor(self, color: TileColor):
         self.color = color
@@ -62,6 +55,7 @@ class Tile:
                 self.piece.getPosX() + self.getXOffset() * Settings.GRID_RES + Settings.GRID_RES,
                 self.piece.getPosY() + self.getYOffset() * Settings.GRID_RES + Settings.GRID_RES)
 
+
 class Piece:
 
     def populateTiles(self):
@@ -79,6 +73,7 @@ class Piece:
         self.patternY = patternY
         self.x = x
         self.y = y
+        self.glow = False
         self.populateTiles()
 
     def getpattern(self):
@@ -117,6 +112,8 @@ class Piece:
                 t = self.pattern[x][y]
                 if t is not None:
                     window.blit(t.getColor().getImage(), (self.x+y*Settings.GRID_RES, self.y+x*Settings.GRID_RES))
+        if self.glow:
+            pygame.draw.rect(window, (255, 255, 255), (self.x, self.y, self.patternY*Settings.GRID_RES, self.patternX*Settings.GRID_RES), 1)
 
     def getTiles(self):
         l = []
@@ -126,3 +123,6 @@ class Piece:
                 if t is not None:
                     l.append(t)
         return l
+
+    def setGlowing(self, val: bool):
+        self.glow = val
